@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+
+
+
+<script>
+
+    var STAGE_HEIGHT = 300;
+    var STAGE_WIDTH = STAGE_HEIGHT * 1.61803;
+
+    var canvas = null;
+    var ctx = null;
+    var isRuning = true;
+    var lastUpdate = Date.now();
+
+    function gameLoop(){
+
+        if(!isRuning){
+            return;
+        }
+
+        var now = Date.now();
+        var td = (now - lastUpdate) / 1000;
+
+
+        console.log("Hello ");
+
+
+    }
+
+
+    function createCanvas(){
+        canvas = document.createElement("canvas");
+        canvas.width = STAGE_WIDTH;
+        canvas.height = STAGE_HEIGHT;
+        document.body.appendChild(canvas);
+        ctx = canvas.getContext("2d");
+    }
+
+
+    window.onload = function(){
+        createCanvas();
+        gameLoop();
+    }
+
+</script>
+
+
+</body>
+</html>
