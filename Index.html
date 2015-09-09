@@ -15,8 +15,11 @@
     var STAGE_WIDTH = STAGE_HEIGHT * 1.61803;
     var PLAYER_START_POS = {x:Math.round(STAGE_WIDTH*0.5),y:Math.round(STAGE_HEIGHT*0.5)};
     var PLAYER_COLOR = "#00a86b";
+    var PICKUP_COLOR = "#FFFF00";
+    var PICKUP_DIM = 5;
     var PLAYER_SPEED = 50;
 
+    var MAX_PICKUPS_PER_LEVEL =  10;
 
     var KEY_CODE_UP = 38;
     var KEY_CODE_DOWN = 40;
@@ -30,9 +33,19 @@
 
     var player = {x:PLAYER_START_POS.x,y:PLAYER_START_POS.y,speed:PLAYER_SPEED, width:10,height:10, tx:0, ty:0};
 
+    var pickups = [];
+
     var keyInput = [];
 
 
+    function resetLevel(){
+
+        for(var index = 0 ; index < MAX_PICKUPS_PER_LEVEL; index++){
+            pickups.push({x:Math.round(Math.random() * STAGE_WIDTH),
+            y:Math.round(Math.random() * STAGE_HEIGHT)});
+        }
+
+    }
 
     function gameLoop(){
 
@@ -84,6 +97,15 @@
         ctx.fillStyle = PLAYER_COLOR;
         ctx.fillRect(player.x,player.y,player.width,player.height);
 
+        ctx.fillStyle = PICKUP_COLOR;
+
+        for(var index in pickups){
+
+            var pickup = pickups[index];
+            ctx.fillRect(pickup.x,pickup.y,PICKUP_DIM,PICKUP_DIM);
+
+        }
+
     }
 
     function createCanvas(){
@@ -105,9 +127,10 @@
 
 
     window.onload = function(){
+        resetLevel();
         createCanvas();
         gameLoop();
-    }
+    };
 
     window.addEventListener("focus", function () {unPause()});
     window.addEventListener("blur", function () {pause()});
