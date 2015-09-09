@@ -13,11 +13,24 @@
 
     var STAGE_HEIGHT = 300;
     var STAGE_WIDTH = STAGE_HEIGHT * 1.61803;
+    var PLAYER_START_POS = {x:Math.round(STAGE_WIDTH*0.5),y:Math.round(STAGE_HEIGHT*0.5)};
+    var PLAYER_COLOR = "#00a86b";
+    var PLAYER_SPEED = 50;
+
+
+    var KEY_CODE_UP = 38;
+    var KEY_CODE_DOWN = 40;
+    var KEY_CODE_LEFT = 37;
+    var KEY_CODE_RIGHT = 39;
 
     var canvas = null;
     var ctx = null;
     var isRuning = true;
     var lastUpdate = Date.now();
+
+    var player = {x:PLAYER_START_POS.x,y:PLAYER_START_POS.y,speed:PLAYER_SPEED, width:10,height:10, tx:0, ty:0};
+
+    var keyInput = [];
 
 
 
@@ -30,7 +43,7 @@
         var now = Date.now();
         var td = (now - lastUpdate) / 1000;
 
-
+        update(td);
         draw();
 
         // Makes the world go around.
@@ -39,10 +52,37 @@
         lastUpdate = now;
     }
 
+    function update(td){
+
+        player.tx = player.x;
+        player.ty = player.y;
+
+        if(keyInput[KEY_CODE_DOWN]){
+            player.ty += player.speed * td;
+        } else if(keyInput[KEY_CODE_UP]){
+            player.ty -= player.speed * td;
+        }
+
+
+        if(keyInput[KEY_CODE_RIGHT]){
+            player.tx += player.speed * td;
+        } else if(keyInput[KEY_CODE_LEFT]){
+            player.tx -= player.speed * td;
+        }
+
+
+        player.x = player.tx;
+        player.y = player.ty;
+
+    }
+
     function draw(){
         // Filling the screen with powder blue
         ctx.fillStyle = "#B4D8E7";
         ctx.fillRect(0,0,STAGE_WIDTH,STAGE_HEIGHT);
+
+        ctx.fillStyle = PLAYER_COLOR;
+        ctx.fillRect(player.x,player.y,player.width,player.height);
 
     }
 
@@ -58,7 +98,10 @@
 
 
     function pause(){ isRuning = false;}
-    function unPause(){isRuning = true;}
+    function unPause(){
+        isRuning = true;
+        lastUpdate = Date.now();
+    }
 
 
     window.onload = function(){
@@ -68,6 +111,15 @@
 
     window.addEventListener("focus", function () {unPause()});
     window.addEventListener("blur", function () {pause()});
+
+    document.addEventListener("keydown", function(e){
+        keyInput[e.keyCode] = true;
+    });
+
+    document.addEventListener("keyup", function(e){
+        keyInput[e.keyCode] = false;
+    });
+
 
 </script>
 
