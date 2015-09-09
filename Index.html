@@ -19,35 +19,55 @@
     var isRuning = true;
     var lastUpdate = Date.now();
 
+
+
     function gameLoop(){
 
-        if(!isRuning){
-            return;
-        }
+        // Our test to se if the game has been paused
+        if(!isRuning){return;}
 
+        //Bookkeeping (what day is it :) )
         var now = Date.now();
         var td = (now - lastUpdate) / 1000;
 
 
-        console.log("Hello ");
+        draw();
 
+        // Makes the world go around.
+        mozRequestAnimationFrame(gameLoop);
+
+        lastUpdate = now;
+    }
+
+    function draw(){
+        // Filling the screen with powder blue
+        ctx.fillStyle = "#B4D8E7";
+        ctx.fillRect(0,0,STAGE_WIDTH,STAGE_HEIGHT);
 
     }
 
-
     function createCanvas(){
+        // Create and put a canvas HTML element isnide the document body.
         canvas = document.createElement("canvas");
         canvas.width = STAGE_WIDTH;
         canvas.height = STAGE_HEIGHT;
         document.body.appendChild(canvas);
+        // Our drawing handle
         ctx = canvas.getContext("2d");
     }
+
+
+    function pause(){ isRuning = false;}
+    function unPause(){isRuning = true;}
 
 
     window.onload = function(){
         createCanvas();
         gameLoop();
     }
+
+    window.addEventListener("focus", function () {unPause()});
+    window.addEventListener("blur", function () {pause()});
 
 </script>
 
